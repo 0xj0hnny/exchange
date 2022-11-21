@@ -1,0 +1,34 @@
+{
+  "transactions": [
+    {
+      "hash": "0x2ebdee9c96a2d22b85777e2be4c24bc14b1a4de0669c1efe2f888abc2e5466e9",
+      "transactionType": "CREATE",
+      "contractName": "Counter",
+      "contractAddress": "0xA545a83FC99DcE5063B352A1291C5234dd44232D",
+      "function": null,
+      "arguments": null,
+      "rpc": "https://goerli.infura.io/v3/3b275677e74c4ecaae4c534ac3fd82e0",
+      "transaction": {
+        "type": "0x02",
+        "from": "0x2eefa4096ad723b3b0ba720ba12e734ac4737792",
+        "gas": "0x23504",
+        "value": "0x0",
+        "data": "0x608060405234801561001057600080fd5b5061010c806100206000396000f3fe6080604052348015600f57600080fd5b506004361060465760003560e01c80633fb5c1cb14604b5780638381f58a14605d578063d09de08a146077578063f2c9ecd814607d575b600080fd5b605b60563660046098565b600055565b005b606560005481565b60405190815260200160405180910390f35b605b6084565b6000546065565b60008054908060918360b0565b9190505550565b60006020828403121560a957600080fd5b5035919050565b60006001820160cf57634e487b7160e01b600052601160045260246000fd5b506001019056fea2646970667358221220c97aecb78fbf11612a327c3c296196e73b2765a6e8427a53bb585fe5d197a3c164736f6c63430008110033",
+        "nonce": "0x0",
+        "accessList": []
+      },
+      "additionalContracts": []
+    }
+  ],
+  "receipts": [],
+  "libraries": [],
+  "pending": [
+    "0x2ebdee9c96a2d22b85777e2be4c24bc14b1a4de0669c1efe2f888abc2e5466e9"
+  ],
+  "path": "/Users/zuyanliang/Desktop/newProject/contract/broadcast/Counter.s.sol/5/run-latest.json",
+  "returns": {},
+  "timestamp": 1668714322,
+  "chain": 5,
+  "multi": false,
+  "commit": "4657de8"
+}
