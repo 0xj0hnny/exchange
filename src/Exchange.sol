@@ -2,22 +2,12 @@
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "forge-std/console.sol";
+import "./IExchange.sol";
 
 error DepositTokenFail();
 error WithdrawTokenFail();
 
-contract Exchange {
-    struct Order {
-        uint256 id;
-        address user;
-        address tokenGet;
-        uint256 amountGet;
-        address tokenGive;
-        uint256 amountGive;
-        uint256 timestamp;
-    }
-
+contract Exchange is IExchange {
     address public immutable feeAccount;
     uint256 public immutable feePercent;
 
@@ -26,45 +16,6 @@ contract Exchange {
     mapping(uint256 => bool) public cancelOrders;
     mapping(uint256 => bool) public ordersFilled;
     uint256 public orderCount;
-
-    event Deposit(
-        address indexed token,
-        address indexed sender,
-        uint256 amount
-    );
-    event Withdraw(
-        address indexed token,
-        address indexed sender,
-        uint256 amount
-    );
-    event MakeOrder(
-        uint256 id,
-        address indexed user,
-        address indexed tokenGet,
-        uint256 amountGet,
-        address indexed tokenGive,
-        uint256 amountGive,
-        uint256 timestamp
-    );
-    event CancelOrder(
-        uint256 id,
-        address indexed user,
-        address indexed tokenGet,
-        uint256 amountGet,
-        address indexed tokenGive,
-        uint256 amountGive,
-        uint256 timestamp
-    );
-    event Trade(
-        uint256 id,
-        address user,
-        address indexed tokenGet,
-        uint256 amountGet,
-        address indexed tokenGive,
-        uint256 amountGive,
-        address indexed trader,
-        uint256 timestamp
-    );
 
     constructor(address _feeAccount, uint256 _feePercent) {
         feeAccount = _feeAccount;
@@ -97,8 +48,7 @@ contract Exchange {
         return success;
     }
 
-    function withdrawEther(uint256 amount) public returns (bool) {
-        console.log("withdraw sender: ", msg.sender);
+    function withdrawEther(uint256 amount) external returns (bool) {
         require(
             balance[address(0)][msg.sender] >= amount,
             "Withdraw out of bound"
@@ -130,7 +80,7 @@ contract Exchange {
     }
 
     function balanceOf(address token, address user)
-        public
+        external
         view
         returns (uint256)
     {
@@ -142,7 +92,7 @@ contract Exchange {
         uint256 amountGet,
         address tokenGive,
         uint256 amountGive
-    ) public {
+    ) external {
         orderCount = orderCount + 1;
         orders[orderCount] = Order(
             orderCount,
@@ -164,7 +114,7 @@ contract Exchange {
         );
     }
 
-    function cancelOrder(uint256 orderId) public {
+    function cancelOrder(uint256 orderId) external {
         Order storage order = orders[orderId];
         require(order.user == msg.sender, "Not order owner");
         require(order.id == orderId, "Order doesn't exist");
@@ -182,7 +132,7 @@ contract Exchange {
     }
 
     function viewOrderDetail(uint256 orderId)
-        public
+        external
         view
         returns (
             uint256 id,
@@ -204,7 +154,7 @@ contract Exchange {
         timestamp = order.timestamp;
     }
 
-    function fillOrder(uint256 orderId) public {
+    function fillOrder(uint256 orderId) external {
         require(orderId > 0 && orderId <= orderCount, "orderId out of bound");
         require(!ordersFilled[orderId], "order already filled");
         require(!cancelOrders[orderId], "order already cancelled");
@@ -230,11 +180,6 @@ contract Exchange {
         uint256 amountGive
     ) internal {
         uint256 feeAmount = (amountGive * feePercent) / 100;
-
-        console.log("feeAmount: ", feeAmount);
-        console.log("msg.sender: ", msg.sender);
-        console.log("tokenGET, ", balance[tokenGet][msg.sender]);
-
         balance[tokenGet][msg.sender] -= (amountGet + feeAmount);
         balance[tokenGet][user] = balance[tokenGet][user] + amountGet;
         balance[tokenGive][user] = balance[tokenGive][user] - amountGive;
