@@ -12,10 +12,10 @@ build :; forge clean && forge build --optimize --optimize-runs 1000000
 
 #Deploy
 deploy-local :;
-	forge script script/Counter.s.sol:CounterScript --fork-url http://localhost:8545 --private-key ${LOCAL_PRIVATE_KEY} --broadcast
+	forge create Exchange --constructor-args ${LOCAL_FEE_ACCOUNT} ${LOCAL_FEE_AMOUNT} src/Exchange.sol --private-key ${LOCAL_PRIVATE_KEY} --rpc-url http://localhost:8545
 
 deploy-test :;
-	forge script script/Counter.s.sol:CounterScript --rpc-url ${GORLI_RPC} --private-key ${GORLI_PRIVATE_KEY} --broadcast
+	forge create Exchange --constructor-args ${GORLI_FEE_ACCOUNT} ${GORLI_FEE_AMOUNT} src/Exchange.sol --private-key ${GORLI_PRIVATE_KEY} --rpc-url ${GORLI_RPC}
 
 deploy-main :;
-	forge script script/Counter.s.sol:CounterScript --rpc-url ${MAINNET_RPC} --private-key ${MAINNET_KEY} --broadcast
+	forge script script/Exchange.s.sol:ExchangeScript --rpc-url ${MAINNET_RPC} --private-key ${MAINNET_KEY} --broadcast
